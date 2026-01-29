@@ -1,0 +1,7 @@
+{
+  "name": "Chronos Convert",
+  "description": "A high-end, privacy-focused local file conversion service that processes everything in your browser using WASM technology. No uploads, just instant transformation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
