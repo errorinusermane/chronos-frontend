@@ -1,11 +1,31 @@
 
 import React from 'react';
+import { AppState } from '../App';
 
 interface HeaderProps {
   onLogoClick: () => void;
+  onTechClick: () => void;
+  onPrivacyClick: () => void;
+  onEnterpriseClick: () => void;
+  currentState: AppState;
 }
 
-const Header: React.FC<HeaderProps> = ({ onLogoClick }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  onLogoClick, 
+  onTechClick, 
+  onPrivacyClick, 
+  onEnterpriseClick,
+  currentState 
+}) => {
+  const getNavLinkClass = (state: AppState) => {
+    const baseClass = "px-5 py-2 rounded-full transition-all duration-300 uppercase tracking-[0.2em] text-[11px] font-medium";
+    const isActive = currentState === state;
+    
+    return isActive 
+      ? `${baseClass} border border-white/20 bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]`
+      : `${baseClass} border border-transparent text-white/50 hover:text-white hover:border-white/10 hover:bg-white/5`;
+  };
+
   return (
     <header className="w-full h-24 flex items-center justify-between px-8 md:px-16 border-b border-white/5 backdrop-blur-sm bg-black/10">
       <div 
@@ -18,12 +38,25 @@ const Header: React.FC<HeaderProps> = ({ onLogoClick }) => {
         </span>
       </div>
       
-      <nav className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-white/50">
-        <a href="#" className="hover:text-white transition-colors">Technology</a>
-        <a href="#" className="hover:text-white transition-colors">Privacy</a>
-        <a href="#" className="px-5 py-2 rounded-full border border-white/10 hover:border-white/30 hover:text-white transition-all bg-white/5">
+      <nav className="hidden md:flex items-center gap-4">
+        <button 
+          onClick={onTechClick}
+          className={getNavLinkClass(AppState.TECH)}
+        >
+          Technology
+        </button>
+        <button 
+          onClick={onPrivacyClick}
+          className={getNavLinkClass(AppState.PRIVACY)}
+        >
+          Privacy
+        </button>
+        <button 
+          onClick={onEnterpriseClick}
+          className={getNavLinkClass(AppState.ENTERPRISE)}
+        >
           Enterprise
-        </a>
+        </button>
       </nav>
       
       <div className="flex items-center gap-2">

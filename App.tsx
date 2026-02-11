@@ -5,11 +5,17 @@ import Hero from './components/Hero';
 import DropZone from './components/DropZone';
 import ProcessingOverlay from './components/ProcessingOverlay';
 import ResultsView from './components/ResultsView';
+import TechnologyView from './components/TechnologyView';
+import PrivacyView from './components/PrivacyView';
+import EnterpriseView from './components/EnterpriseView';
 
 export enum AppState {
   IDLE = 'IDLE',
   PROCESSING = 'PROCESSING',
-  RESULTS = 'RESULTS'
+  RESULTS = 'RESULTS',
+  TECH = 'TECH',
+  PRIVACY = 'PRIVACY',
+  ENTERPRISE = 'ENTERPRISE'
 }
 
 interface FileData {
@@ -41,6 +47,10 @@ const App: React.FC = () => {
     setCurrentState(AppState.IDLE);
   }, []);
 
+  const navigateTo = useCallback((state: AppState) => {
+    setCurrentState(state);
+  }, []);
+
   return (
     <div className="relative min-h-screen selection:bg-indigo-500/30 selection:text-indigo-200">
       {/* Spline Background Container */}
@@ -56,7 +66,13 @@ const App: React.FC = () => {
 
       {/* Content Overlay */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        <Header onLogoClick={reset} />
+        <Header 
+          onLogoClick={reset} 
+          onTechClick={() => navigateTo(AppState.TECH)}
+          onPrivacyClick={() => navigateTo(AppState.PRIVACY)}
+          onEnterpriseClick={() => navigateTo(AppState.ENTERPRISE)}
+          currentState={currentState}
+        />
         
         <main className="flex-grow flex flex-col items-center justify-center px-6 py-12">
           {currentState === AppState.IDLE && (
@@ -69,6 +85,18 @@ const App: React.FC = () => {
                 Zero Cloud Interaction &bull; Local WASM Transformation &bull; Privacy First
               </footer>
             </div>
+          )}
+
+          {currentState === AppState.TECH && (
+            <TechnologyView onBack={reset} />
+          )}
+
+          {currentState === AppState.PRIVACY && (
+            <PrivacyView onBack={reset} />
+          )}
+
+          {currentState === AppState.ENTERPRISE && (
+            <EnterpriseView onBack={reset} />
           )}
 
           {currentState === AppState.PROCESSING && uploadedFile && (
